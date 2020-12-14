@@ -1,0 +1,119 @@
+spring:
+  profiles:
+    active:  dev
+camel:  springboot:    main-run-controller: true
+        shutdown-timeout: 2
+    
+---
+
+spring:
+  profiles: mock
+  datasource:
+    driverClassName: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/localDB
+    username: root
+    password: Nate2763666
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: renchiiks@gmail.com
+    password: Nate2763666
+    properties.mail.smtp.auth: true
+    properties.mail.smtp.starttls.enable: true
+    
+mailto: renchiiks@gmail.com
+mailfrom: renchiiks@gamil.com      
+      
+startRoute: direct:input
+fromRoute: file:data/input?delete=true&readLock=none&moveFailed=error
+toRoute1: mock:output
+toRoute2: jdbc:dataSource
+toRoute3: file:data/output?fileName=Success.txt
+
+
+message: Mock environment
+---
+
+spring:
+  profiles: dev
+  datasource:
+    driver-class-name: org.gjt.mm.mysql.Driver
+    url: jdbc:mysql://localhost:3306/localDB
+    username: root
+    password: Nate2763666
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: renchiiks@gmail.com
+    password: Nate2763666
+    properties.mail.smtp.auth: true
+    properties.mail.smtp.starttls.enable: true
+    
+mailto: renchiiks@gmail.com
+mailfrom: renchiiks@gamil.com
+startRoute: timer:hello?period=10s
+fromRoute: file:data/input?delete=true&readLock=none&moveFailed=error
+toRoute1: file:data/output
+toRoute2: jdbc:dataSource
+toRoute3: file:data/output?fileName=Success.txt
+
+message: Dev environment
+  
+---
+spring:
+  profiles: stage
+  datasource:
+    driver-class-name: org.gjt.mm.mysql.Driver
+    url: jdbc:mysql://localhost:3306/localDB
+    username: root
+    password: Nate2763666
+    
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: renchiiks@gmail.com
+    password: Nate2763666
+    properties.mail.smtp.auth: true
+    properties.mail.smtp.starttls.enable: true
+    
+mailto: renchiiks@gmail.com
+mailfrom: renchiiks@gamil.com
+
+startRoute: timer:hello?period=10s
+fromRoute: file:data/input?delete=true&readLock=none&moveFailed=error
+toRoute1: file:data/output
+toRoute2: jdbc:dataSource
+toRoute3: file:data/output?fileName=Success.txt
+
+message: Stage environment
+  
+---
+
+spring:
+  profiles: prod
+  datasource:
+     driver-class-name: org.gjt.mm.mysql.Driver
+     url: jdbc:mysql://localhost:3306/localDB
+     username: root
+     password: Nate2763666
+    
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: renchiiks@gmail.com
+    password: nate2763666
+    properties.mail.smtp.auth: true
+    properties.mail.smtp.starttls.enable: true
+    
+mailTo: renchiiks@gmail.com
+mailfrom: renchiiks@gmail.com
+  
+startRoute: timer:hello?period=10s
+fromRoute: file:data/input?delete=true&readLock=none&moveFailed=error
+toRoute1: file:data/output
+toRoute2: jdbc:dataSource
+toRoute3: file:data/output?fileName=Success.txt
+
+message: Prod environment
+  
+---
